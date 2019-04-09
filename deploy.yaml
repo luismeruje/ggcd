@@ -1,0 +1,24 @@
+- hosts: localhost
+  gather_facts: no
+  vars:
+    test: true
+    gcp_region: europe-west4
+    gcp_zone: europe-west4-a
+    gcp_project: glassy-mystery-232515
+    gcp_cred_kind: serviceaccount
+    gcp_cred_file: credentials.json
+    source_image: projects/ubuntu-os-cloud/global/images/ubuntu-1604-xenial-v20181030
+  roles:
+    #create network
+    - role: gcp-network
+
+    #create monitor
+    - role: gcp-instance
+      vars:
+        gcp_machine_type: n1-standard-1
+        instances:
+          - { index: 1, tag: fetcher }
+        disk_size: 50
+        disk_type: pd-standard
+        type: fetcher
+        external_ip: true

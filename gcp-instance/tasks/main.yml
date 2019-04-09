@@ -1,0 +1,107 @@
+- name: create a disk
+  gcp_compute_disk:
+    name: "disk-{{ type }}-{{ '%02d' | format(item.index) }}"
+    size_gb: "{{ disk_size }}"
+    type: "{{ disk_type }}" # pd-standard || pd-ssd
+    source_image: "{{ source_image }}"
+    zone: "{{ gcp_zone }}"
+    project: "{{ gcp_project }}"
+    auth_kind: "{{ gcp_cred_kind }}"
+    service_account_file: "{{ gcp_cred_file }}"
+    state: present
+  register: disk
+  loop: "{{ instances }}"
+
+- name: create an address
+  gcp_compute_address:
+    name: "addr-{{ type }}-{{ '%02d' | format(item.index) }}"
+    region: "{{ gcp_region }}"
+    project: "{{ gcp_project }}"
+    auth_kind: "{{ gcp_cred_kind }}"
+    service_account_file: "{{ gcp_cred_file }}"
+    state: absent
+  register: address
+  loop: "{{ instances }}"
+  when: external_ip
+
+- name: create an instance with external ip
+  gcp_compute_instance:
+    name: "ggcd-{{ type }}-{{ '%02d' | format(item.index) }}"
+    machine_type: "{{ gcp_machine_type }}"
+    disks:
+      - auto_delete: true
+        boot: true
+        source: "{{ disk.results[item.index - 1] }}"
+    metadata:
+      startup-script: |
+        #!/bin/bash
+        apt-get update -y
+        apt-get upgrade -y
+    tags:
+      items: 
+        - "{{ item.tag }}"
+        - "nat"
+    network_interfaces:
+      - network: "{{ network }}"
+        access_configs:
+        - name: External NAT
+          nat_ip: "{{ address.results[item.index - 1] }}"
+          type: ONE_TO_ONE_NAT
+    zone: "{{ gcp_zone }}"
+    project: "{{ gcp_project }}"
+    auth_kind: "{{ gcp_cred_kind }}"
+    service_account_file: "{{ gcp_cred_file }}"
+    service_accounts:
+      - scopes: ['https://www.googleapis.com/auth/compute']
+    can_ip_forward: true
+    state: present
+  register: instance
+  loop: "{{ instances }}"
+  when: external_ip
+
+- name: Add hosts to in memory inventory (external IP)
+  add_host:
+    name: "{{ item.networkInterfaces[0].accessConfigs[0].natIP }}"
+    groups: "{{ item.tags['items'] | join(',') }}"
+  loop: "{{ instance.results }}"
+  when: external_ip
+
+- name: create an instance without external ip
+  gcp_compute_instance:
+    name: "ggcd-{{ type }}-{{ '%02d' | format(item.index) }}"
+    machine_type: "{{ gcp_machine_type }}"
+    disks:
+      - auto_delete: true
+        boot: true
+        source: "{{ disk.results[item.index - 1] }}"
+    metadata:
+      startup-script: |
+        #!/bin/bash
+        apt-get update -y
+        apt-get upgrade -y
+    tags:
+      items: 
+       - "{{ item.tag }}"
+       - "no-ip"
+    network_interfaces:
+      - network: "{{ network }}"
+    zone: "{{ gcp_zone }}"
+    project: "{{ gcp_project }}"
+    auth_kind: "{{ gcp_cred_kind }}"
+    service_account_file: "{{ gcp_cred_file }}"
+    service_accounts:
+      - scopes: ['https://www.googleapis.com/auth/compute']
+    can_ip_forward: true
+    state: present
+  register: instance
+  loop: "{{ instances }}"
+  when: not(external_ip)
+  
+- name: Add hosts to in memory inventory (internal IP)
+  add_host:
+    name: "{{ item.networkInterfaces[0].networkIP }}"
+    groups: "{{ item.tags['items'] | join(',') }}"
+  loop: "{{ instance.results }}"
+  when: not(external_ip)
+
+
