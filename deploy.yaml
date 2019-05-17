@@ -4,7 +4,7 @@
     test: true
     gcp_region: europe-west4
     gcp_zone: europe-west4-a
-    gcp_project: glassy-mystery-232515
+    gcp_project: fluent-aileron-232516
     gcp_cred_kind: serviceaccount
     gcp_cred_file: credentials.json
     source_image: projects/ubuntu-os-cloud/global/images/ubuntu-1604-xenial-v20181030
