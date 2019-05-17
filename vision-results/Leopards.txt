@@ -1,0 +1,548 @@
+Image 1
+	Terrestrial animal:0.9934766
+	Wildlife:0.99048984
+	Vertebrate:0.9851104
+	Cheetah:0.9841263
+	Mammal:0.97272706
+	Felidae:0.96496
+	Leopard:0.9483059
+	Grassland:0.9363559
+	African leopard:0.89662355
+	Nature reserve:0.88618094
+Image 2
+	Vertebrate:0.9851104
+	Terrestrial animal:0.9839575
+	Wildlife:0.9822426
+	Mammal:0.97272706
+	Cheetah:0.9575391
+	Felidae:0.9312695
+	Giraffidae:0.89568645
+	Giraffe:0.8826635
+	Organism:0.79410547
+	Adaptation:0.77257794
+Image 3
+	Terrestrial animal:0.9910291
+	Wildlife:0.9870578
+	Cheetah:0.9867919
+	Vertebrate:0.9851104
+	Mammal:0.97581416
+	Felidae:0.9654615
+	Leopard:0.9551055
+	African leopard:0.8978614
+	Nature reserve:0.8718712
+	Small to medium-sized cats:0.87080514
+Image 4
+	Terrestrial animal:0.98982173
+	Vertebrate:0.9851104
+	Cheetah:0.9717251
+	Wildlife:0.9600042
+	Felidae:0.95593846
+	Adaptation:0.865223
+	Jaguar:0.84645545
+	Organism:0.8422173
+	African leopard:0.7625636
+	Small to medium-sized cats:0.757646
+Image 5
+	Terrestrial animal:0.9915472
+	Wildlife:0.98818403
+	Vertebrate:0.9851104
+	Cheetah:0.9815577
+	Mammal:0.97581416
+	Felidae:0.962594
+	Small to medium-sized cats:0.9124094
+	Nature reserve:0.8917367
+	Leopard:0.8887384
+	Grass:0.8854506
+Image 6
+	Terrestrial animal:0.98982173
+	Cheetah:0.9867919
+	Vertebrate:0.9851104
+	Mammal:0.97272706
+	Wildlife:0.9691152
+	Felidae:0.96496
+	Leopard:0.93572944
+	Jaguar:0.92578703
+	Big cats:0.8959906
+	African leopard:0.8766296
+Image 7
+	Terrestrial animal:0.9936422
+	Wildlife:0.9898331
+	Vertebrate:0.9851104
+	Cheetah:0.9841263
+	Mammal:0.97581416
+	Leopard:0.9748554
+	Felidae:0.9671107
+	Jaguar:0.9509261
+	Big cats:0.9069671
+	Nature reserve:0.9007679
+Image 8
+	Terrestrial animal:0.98959434
+	Wildlife:0.98511654
+	Vertebrate:0.9851104
+	Cheetah:0.9693295
+	Leopard:0.9662519
+	Felidae:0.96351993
+	Jaguar:0.95597243
+	African leopard:0.8865895
+	Big cats:0.8773777
+	Adaptation:0.8542756
+Image 9
+	Terrestrial animal:0.99344903
+	Wildlife:0.99048984
+	Vertebrate:0.9851104
+	Cheetah:0.9841263
+	Mammal:0.97581416
+	Felidae:0.964471
+	Leopard:0.9631732
+	African leopard:0.8940582
+	Grassland:0.8812105
+	Jaguar:0.88042325
+Image 10
+	Terrestrial animal:0.9864034
+	Wildlife:0.9857012
+	Cheetah:0.9790477
+	Grassland:0.9580326
+	Felidae:0.9572562
+	Leopard:0.9039452
+	Grass:0.86818606
+	Savanna:0.8630743
+	Adaptation:0.86090285
+	Big cats:0.8410524
+Image 11
+	Terrestrial animal:0.9899851
+	Cheetah:0.9867919
+	Vertebrate:0.9851104
+	Wildlife:0.98049176
+	Mammal:0.97581416
+	Felidae:0.9671107
+	Leopard:0.9583928
+	Small to medium-sized cats:0.92851865
+	African leopard:0.8996626
+	Big cats:0.8842499
+Image 12
+	Terrestrial animal:0.99297345
+	Vertebrate:0.9851104
+	Wildlife:0.9842506
+	Cheetah:0.97657853
+	Mammal:0.97059435
+	Felidae:0.9665238
+	Leopard:0.9447985
+	Jaguar:0.9341936
+	African leopard:0.902115
+	Nature reserve:0.9007679
+Image 13
+	Vertebrate:0.9851104
+	Cheetah:0.9841263
+	Terrestrial animal:0.9822463
+	Wildlife:0.9783632
+	Felidae:0.95637786
+	Grass:0.8748446
+	Grassland:0.85581744
+	Small to medium-sized cats:0.8476116
+	Adaptation:0.832799
+	Carnivore:0.8292849
+Image 14
+	Terrestrial animal:0.9924672
+	Wildlife:0.989631
+	Vertebrate:0.9851104
+	Mammal:0.97272706
+	Leopard:0.96923494
+	Cheetah:0.96694946
+	Felidae:0.9665238
+	Nature reserve:0.96609634
+	Jaguar:0.93921554
+	Vegetation:0.9190431
+Image 15
+	Terrestrial animal:0.97638017
+	Cheetah:0.9693295
+	Wildlife:0.96133274
+	Felidae:0.96078783
+	Leopard:0.9018213
+	Snow leopard:0.89084965
+	African leopard:0.88536125
+	Big cats:0.85191315
+	Jaguar:0.84645545
+	Nature reserve:0.8341527
+Image 16
+	Terrestrial animal:0.98606086
+	Wildlife:0.981081
+	Cheetah:0.9717251
+	Felidae:0.96078783
+	Roar:0.95600563
+	Facial expression:0.94438577
+	Snout:0.91744834
+	Snow leopard:0.91677505
+	Whiskers:0.8950522
+	Adaptation:0.8291429
+Image 17
+	Terrestrial animal:0.9933939
+	Wildlife:0.9898331
+	Cheetah:0.9867919
+	Vertebrate:0.9851104
+	Mammal:0.97581416
+	Felidae:0.96496
+	Leopard:0.9412218
+	Grassland:0.91940063
+	Small to medium-sized cats:0.915541
+	Nature reserve:0.8965478
+Image 18
+	Terrestrial animal:0.9874101
+	Vertebrate:0.9851104
+	Wildlife:0.9825304
+	Cheetah:0.9815577
+	Mammal:0.97581416
+	Felidae:0.96496
+	Leopard:0.9319844
+	Small to medium-sized cats:0.9226415
+	Carnivore:0.8667573
+	Jaguar:0.8637622
+Image 19
+	Terrestrial animal:0.99300206
+	Mammal:0.9890478
+	Wildlife:0.98785305
+	Cheetah:0.9867919
+	Vertebrate:0.9851104
+	Felidae:0.9671107
+	Leopard:0.9517423
+	Jaguar:0.9070061
+	African leopard:0.8940582
+	Snout:0.8889143
+Image 20
+	Terrestrial animal:0.99317163
+	Mammal:0.9890478
+	Wildlife:0.98690313
+	Vertebrate:0.9851104
+	Cheetah:0.9693295
+	Felidae:0.9665238
+	Grassland:0.9252614
+	Leopard:0.9242972
+	Nature reserve:0.9045095
+	Whiskers:0.8923497
+Image 21
+	Terrestrial animal:0.991355
+	Wildlife:0.98674965
+	Vertebrate:0.9851104
+	Cheetah:0.9841263
+	Mammal:0.97581416
+	Leopard:0.9721098
+	Felidae:0.96351993
+	Jaguar:0.9070061
+	African leopard:0.89756674
+	Nature reserve:0.8796644
+Image 22
+	Terrestrial animal:0.98923045
+	Vertebrate:0.9851104
+	Cheetah:0.9841263
+	Wildlife:0.9823866
+	Mammal:0.97581416
+	Felidae:0.9665238
+	Leopard:0.96472394
+	Jaguar:0.9408876
+	African leopard:0.89628893
+	Small to medium-sized cats:0.8958345
+Image 23
+	Cheetah:0.9897526
+	Vertebrate:0.9851104
+	Terrestrial animal:0.98286635
+	Wildlife:0.97708565
+	Mammal:0.97581416
+	Felidae:0.964471
+	Whiskers:0.8923497
+	Snout:0.88498515
+	Carnivore:0.8226868
+	Small to medium-sized cats:0.8150826
+Image 24
+	Terrestrial animal:0.9921465
+	Vertebrate:0.9851104
+	Wildlife:0.9828176
+	Cheetah:0.97657853
+	Mammal:0.97059435
+	Felidae:0.95989877
+	Leopard:0.8842474
+	Nature reserve:0.8718712
+	African leopard:0.83961755
+	Big cats:0.8224789
+Image 25
+	Terrestrial animal:0.9919436
+	Wildlife:0.99048984
+	Vertebrate:0.9851104
+	Cheetah:0.9841263
+	Leopard:0.97616804
+	Mammal:0.97059435
+	Felidae:0.9639916
+	Jaguar:0.92747325
+	Big cats:0.9069671
+	Nature reserve:0.9045095
+Image 26
+	Terrestrial animal:0.9934215
+	Wildlife:0.9900426
+	Vertebrate:0.9851104
+	Cheetah:0.9790477
+	Mammal:0.97581416
+	Felidae:0.9659801
+	Leopard:0.95675886
+	Nature reserve:0.91361725
+	Jaguar:0.9121771
+	African leopard:0.90049684
+Image 27
+	Terrestrial animal:0.99211323
+	Wildlife:0.9876906
+	Vertebrate:0.9851104
+	Cheetah:0.97413987
+	Mammal:0.97272706
+	Felidae:0.9654615
+	Leopard:0.95675886
+	Small to medium-sized cats:0.8981408
+	Nature reserve:0.8965478
+	African leopard:0.8955886
+Image 28
+	Terrestrial animal:0.98993134
+	Mammal:0.9890478
+	Wildlife:0.9870578
+	Cheetah:0.9867919
+	Vertebrate:0.9851104
+	Felidae:0.9665238
+	Leopard:0.937577
+	Grassland:0.93389845
+	Small to medium-sized cats:0.89699167
+	Grass:0.86818606
+Image 29
+	Terrestrial animal:0.9930589
+	Wildlife:0.988353
+	Vertebrate:0.9851104
+	Cheetah:0.9717251
+	Mammal:0.97059435
+	Leopard:0.9662519
+	Felidae:0.964471
+	Nature reserve:0.94039285
+	Jaguar:0.92747325
+	African leopard:0.89628893
+Image 30
+	Terrestrial animal:0.99252903
+	Wildlife:0.98905885
+	Vertebrate:0.9851104
+	Cheetah:0.9841263
+	Mammal:0.97272706
+	Leopard:0.9721098
+	Felidae:0.9654615
+	Grassland:0.9283801
+	African leopard:0.90049684
+	Jaguar:0.9000432
+Image 31
+	Terrestrial animal:0.9910291
+	Cheetah:0.9897526
+	Vertebrate:0.9851104
+	Wildlife:0.9823866
+	Mammal:0.97272706
+	Felidae:0.9671107
+	Leopard:0.9631732
+	Jaguar:0.94757575
+	Small to medium-sized cats:0.9206409
+	African leopard:0.9018921
+Image 32
+	Terrestrial animal:0.992436
+	Mammal:0.9890478
+	Wildlife:0.985262
+	Vertebrate:0.9851104
+	Cheetah:0.9841263
+	Felidae:0.9654615
+	Grassland:0.8812105
+	Small to medium-sized cats:0.87080514
+	Adaptation:0.8463547
+	Snout:0.84554297
+Image 33
+	Terrestrial animal:0.99076784
+	Mammal:0.9890478
+	Vertebrate:0.9851104
+	Wildlife:0.9822426
+	Cheetah:0.9693295
+	Felidae:0.9665238
+	Leopard:0.9534332
+	Jaguar:0.94757575
+	Small to medium-sized cats:0.9434165
+	Nature reserve:0.94039285
+Image 34
+	Terrestrial animal:0.9936699
+	Mammal:0.9890478
+	Vertebrate:0.9851104
+	Wildlife:0.9831043
+	Cheetah:0.9815577
+	Leopard:0.9796448
+	Jaguar:0.96798176
+	Felidae:0.96784574
+	Nature reserve:0.94508296
+	Carnivore:0.9342105
+Image 35
+	Terrestrial animal:0.9886963
+	Vertebrate:0.9851104
+	Wildlife:0.98137325
+	Felidae:0.95857465
+	Cheetah:0.9482336
+	African leopard:0.90149903
+	Leopard:0.8656255
+	Jaguar:0.8618728
+	Organism:0.8593868
+	Adaptation:0.8491393
+Image 36
+	Wildlife:0.9845382
+	Terrestrial animal:0.9796853
+	Leopard:0.97861606
+	Mammal:0.97059435
+	Felidae:0.9665238
+	Jaguar:0.94255924
+	Big cats:0.9271884
+	African leopard:0.901769
+	Nature reserve:0.9007679
+	Organism:0.8342534
+Image 37
+	Terrestrial animal:0.99150944
+	Wildlife:0.98034334
+	Jaguar:0.9791573
+	Leopard:0.97742844
+	Mammal:0.97272706
+	Felidae:0.9671107
+	Cheetah:0.9436011
+	Big cats:0.9209806
+	Whiskers:0.903492
+	African leopard:0.90221465
+Image 38
+	Terrestrial animal:0.98543924
+	Vertebrate:0.9851104
+	Cheetah:0.9815577
+	Wildlife:0.97434473
+	Jaguar:0.96623224
+	Felidae:0.96123517
+	African leopard:0.90221465
+	Leopard:0.89752513
+	Adaptation:0.8408808
+	Big cats:0.8272817
+Image 39
+	Vertebrate:0.9851104
+	Terrestrial animal:0.9793755
+	Felidae:0.9630544
+	Jaguar:0.95935965
+	Leopard:0.91432285
+	Wildlife:0.9052615
+	Whiskers:0.8536072
+	Big cats:0.85191315
+	Snout:0.8251877
+	Carnivore:0.8226868
+Image 40
+	Vertebrate:0.9851104
+	Terrestrial animal:0.9738546
+	Wildlife:0.96819246
+	Felidae:0.964471
+	Cheetah:0.96222603
+	Jaguar:0.94757575
+	Leopard:0.91227955
+	African leopard:0.9000968
+	Big cats:0.8881596
+	Adaptation:0.832799
+Image 41
+	Terrestrial animal:0.9911541
+	Vertebrate:0.9851104
+	Wildlife:0.9786749
+	Jaguar:0.9752223
+	Mammal:0.97272706
+	Leopard:0.9706869
+	Felidae:0.96496
+	Big cats:0.91320866
+	African leopard:0.902115
+	Cheetah:0.89948624
+Image 42
+	Wildlife:0.8498874
+	Jaguar:0.744207
+	Adaptation:0.7408302
+	Snout:0.7342774
+	Crocodile:0.67059696
+	Saltwater crocodile:0.6598035
+	Felidae:0.6263736
+	Leopard:0.51467633
+Image 43
+	Terrestrial animal:0.99308723
+	Wildlife:0.98034334
+	Leopard:0.9748554
+	Felidae:0.9665238
+	Jaguar:0.96623224
+	Nature reserve:0.92433375
+	African leopard:0.899884
+	Big cats:0.8979602
+	Cheetah:0.8877022
+	Carnivore:0.8834781
+Image 44
+	Terrestrial animal:0.9909866
+	Vertebrate:0.9851104
+	Wildlife:0.98180914
+	Mammal:0.97581416
+	Leopard:0.9706869
+	Felidae:0.9671107
+	Whiskers:0.9507313
+	Jaguar:0.94925
+	Snout:0.9033606
+	Big cats:0.9009315
+Image 45
+	Terrestrial animal:0.9793755
+	Leopard:0.9748554
+	Wildlife:0.97266334
+	Felidae:0.9654615
+	Jaguar:0.9610632
+	African leopard:0.9025341
+	Cheetah:0.9018306
+	Big cats:0.9009315
+	Adaptation:0.8429217
+	Carnivore:0.8292849
+Image 46
+	Terrestrial animal:0.9864034
+	Vertebrate:0.9851104
+	Wildlife:0.9651664
+	Felidae:0.8913586
+	Big cats:0.8099237
+	Adaptation:0.80356693
+	Carnivore:0.7728859
+	Organism:0.76717746
+	Lion:0.64094776
+	National park:0.59899396
+Image 47
+	Owl:0.9550939
+	Branch:0.9220875
+	Wildlife:0.90018004
+	Bird:0.8888697
+	Bird of prey:0.87536407
+	Tree:0.8550312
+	Felidae:0.8386779
+	Leopard:0.814309
+	Adaptation:0.80356693
+	Big cats:0.79505485
+Image 48
+	Terrestrial animal:0.98027116
+	Felidae:0.9630544
+	Leopard:0.95675886
+	Wildlife:0.9566877
+	Jaguar:0.93754274
+	Big cats:0.89304787
+	African leopard:0.88718146
+	Cheetah:0.8805763
+	Organism:0.86369014
+	Adaptation:0.8463547
+Image 49
+	Terrestrial animal:0.99237305
+	Wildlife:0.98614573
+	Vertebrate:0.9851104
+	Leopard:0.97742844
+	Mammal:0.97581416
+	Jaguar:0.9752223
+	Felidae:0.9671107
+	Cheetah:0.9645824
+	Nature reserve:0.920541
+	Big cats:0.91536
+Image 50
+	Tree:0.9694428
+	Branch:0.95022094
+	Felidae:0.9080903
+	Leopard:0.8865011
+	Wildlife:0.87476116
+	Big cats:0.85612833
+	Woody plant:0.79042745
+	Plant:0.7873782
+	Adaptation:0.6696612
+	Bird of prey:0.65540445
