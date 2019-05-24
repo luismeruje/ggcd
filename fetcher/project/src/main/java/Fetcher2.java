@@ -1,7 +1,4 @@
 
-
-
-
 /* -------------------------------------------------------------------------- */
 
 import twitter4j.FilterQuery;
@@ -10,14 +7,12 @@ import twitter4j.TwitterStream;
 import twitter4j.TwitterStreamFactory;
 import twitter4j.conf.Configuration;
 
-import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class Fetcher
-{
+public class Fetcher2 {
     private TwitterStream twitter;
 
     private int nListerners;
@@ -43,8 +38,7 @@ public class Fetcher
         //}
 
         @Override
-        public void onMessage(String str)
-        {
+        public void onMessage(String str) {
             counter++;
 
 
@@ -53,8 +47,7 @@ public class Fetcher
         }
 
         @Override
-        public void onException(Exception e)
-        {
+        public void onException(Exception e) {
             e.printStackTrace();
         }
 
@@ -63,8 +56,7 @@ public class Fetcher
     /* ---------------------------------------------------------------------- */
 
     public Fetcher(Configuration config,
-                   int nListerners)
-    {
+                   int nListerners) {
         try {
 
             //this.socket = new Socket(address, port);
@@ -80,9 +72,7 @@ public class Fetcher
                 this.listeners.add(l);
             }
 
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
 
         }
 
@@ -90,17 +80,16 @@ public class Fetcher
 
     /* ---------------------------------------------------------------------- */
 
-    public void start()
-    {
+    public void start() {
         FilterQuery query = new FilterQuery();
 
         double[] southwestcornerPT = {-9.52657060387, 36.838268541};
         double[] northeastcornerPT = {-6.3890876937, 42.280468655};
 
-        double[] southwestcornerUS= {-171.791110603, 18.91619};
+        double[] southwestcornerUS = {-171.791110603, 18.91619};
         double[] northeastcornerUS = {-66.96466, 71.3577635769};
 
-        double[] southwestcornerES= {-9.39288367353, 35.946850084};
+        double[] southwestcornerES = {-9.39288367353, 35.946850084};
         double[] northeastcornerES = {3.03948408368, 43.7483377142};
 
         double[] southwestcornerUK = {-7.57216793459, 49.959999905};
@@ -120,7 +109,4 @@ public class Fetcher
 
     /* ---------------------------------------------------------------------- */
 
-
 }
-
-/* -------------------------------------------------------------------------- */
