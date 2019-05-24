@@ -1,0 +1,8 @@
+syntax = "proto2";
+
+option java_outer_classname = "ImageReferenceProto";
+option java_package = "protobuf";
+
+message ImageReference{
+    required string reference = 1;
+}
