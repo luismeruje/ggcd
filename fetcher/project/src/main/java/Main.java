@@ -1,6 +1,7 @@
 /* -------------------------------------------------------------------------- */
 
 import twitter4j.conf.Configuration;
+import twitter4j.conf.ConfigurationBuilder;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -29,12 +30,12 @@ public class Main
         if (config != null)
         {
             Fetcher f = new Fetcher(config,
-                          1,
-                         60000,
-                            "src/main/resources/output.txt");
+                             1,
+                          60000,
+                         "src/main/resources/output.txt");
 
             String[] lang = {};
-            String[] countries = {"uk"};
+            String[] countries = {"us"};
             f.start(new HashSet<>(Arrays.asList(countries)),
                     new HashSet<>(Arrays.asList(lang)));
         }

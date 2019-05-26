@@ -6,17 +6,26 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.services.bigquery.model.TableRow;
 import com.google.cloud.bigquery.*;
 import org.apache.spark.*;
+import org.apache.spark.storage.StorageLevel;
+import org.apache.spark.streaming.Durations;
+import org.apache.spark.streaming.api.java.JavaDStream;
+import org.apache.spark.streaming.api.java.JavaReceiverInputDStream;
+import org.apache.spark.streaming.api.java.JavaStreamingContext;
+import org.apache.spark.streaming.twitter.TwitterUtils;
+import twitter.fetcher.Authentication;
+import twitter.fetcher.Fetcher;
 import twitter.json.Hashtag;
 import twitter.json.Media;
 import twitter.json.Tweet;
+import twitter4j.FilterQuery;
+import twitter4j.Status;
+import twitter4j.auth.OAuthAuthorization;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.logging.Filter;
 
 public class Processor {
     public static void main(String args[]) throws Exception{
@@ -178,11 +187,25 @@ public class Processor {
         //imageClassifierStub.classifyImage()
 
 
-        /*JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(5));
+        JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(5));
 
+        OAuthAuthorization auth = Authentication.authentication();
 
-        JavaReceiverInputDStream<String> lines = jssc.socketTextStream(\\\"localhost\\\", 9999);
-        JavaDStream<Tweet> tweets = lines.map(rdd -> {
+        String[] countries = {"us"};
+        String[] languages = {};
+        FilterQuery query = Fetcher.getQuery(
+                new HashSet<>(Arrays.asList(countries),
+                new HashSet<>(Arrays.asList(languages))));
+
+        JavaReceiverInputDStream<Status> stream =
+                TwitterUtils.createFilteredStream(jssc, auth, query, StorageLevel.MEMORY_ONLY_SER_2());
+
+        Fetcher f = new Fetcher(auth,
+                     60000,
+                       "src/main/resources/output.txt");
+        f.start(query);
+
+        JavaDStream<Tweet> tweets = tweets.map(rdd -> {
             return mapper.readValue(rdd,Tweet.class);
         });
         JavaDStream<String> words = lines.flatMap(x -> Arrays.asList(x.split(\\\" \\\")).iterator());

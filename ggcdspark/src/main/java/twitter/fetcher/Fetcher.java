@@ -1,18 +1,20 @@
 /* -------------------------------------------------------------------------- */
 
-import twitter4j.FilterQuery;
-import twitter4j.RawStreamListener;
-import twitter4j.TwitterStream;
-import twitter4j.TwitterStreamFactory;
+package twitter.fetcher;
+
+/* -------------------------------------------------------------------------- */
+
+import org.apache.spark.storage.StorageLevel;
+import org.apache.spark.streaming.api.java.JavaReceiverInputDStream;
+import org.apache.spark.streaming.api.java.JavaStreamingContext;
+import org.apache.spark.streaming.twitter.TwitterUtils;
+import twitter4j.*;
+import twitter4j.auth.OAuthAuthorization;
 import twitter4j.conf.Configuration;
 
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
-
 import java.util.concurrent.TimeUnit;
 
 /* -------------------------------------------------------------------------- */
@@ -28,8 +30,7 @@ import java.util.concurrent.TimeUnit;
 public class Fetcher
 {
     private TwitterStream twitter;
-
-    private List<RawListener> listeners;
+    private RawListener listener;
 
     /* ---------------------------------------------------------------------- */
 
@@ -60,8 +61,6 @@ public class Fetcher
             {
                 counter++;
             }
-            // TODO
-
         }
 
         @Override
@@ -119,25 +118,32 @@ public class Fetcher
             }
         }
 
+        public void stop()
+        {
+            try
+            {
+                this.statsT.interrupt();
+                this.statsT.join();
+            }
+            catch(InterruptedException e)
+            {
+            }
+        }
+
     }
 
     /* ---------------------------------------------------------------------- */
 
-    public Fetcher(Configuration config,
-                   int nListerners,
+    public Fetcher(OAuthAuthorization auth,
                    long printInterval,
                    String filename)
     {
         try
         {
-            this.twitter = new TwitterStreamFactory(config).getInstance();
+            this.twitter = new TwitterStreamFactory().getInstance(auth);
+            this.listener = new RawListener(printInterval, filename);
 
-            this.listeners = new ArrayList<RawListener>();
-            for (int i = 0; i < nListerners; ++i) {
-                RawListener l = new RawListener(printInterval, filename);
-                this.twitter.addListener(l);
-                this.listeners.add(l);
-            }
+            this.twitter.addListener(this.listener);
         }
         catch(Exception e)
         {
@@ -146,7 +152,8 @@ public class Fetcher
 
     /* ---------------------------------------------------------------------- */
 
-    public void start(Set<String> countries, Set<String> languages)
+    public static FilterQuery getQuery(
+            Set<String> countries, Set<String> languages)
     {
         FilterQuery query = new FilterQuery();
 
@@ -195,15 +202,31 @@ public class Fetcher
             }
         }
 
-        query.locations(southwestcornerWD, northeastcornerWD);
-
         for(String lang : languages)
         {
             query.language(lang);
         }
 
+        return query;
+    }
+
+    /* -------------------------------------------------------------------------- */
+
+    public void start(FilterQuery query)
+    {
         this.twitter.filter(query);
     }
+
+    public void stop()
+    {
+        this.listener.stop();
+        this.twitter.shutdown();
+    }
+
 }
+
+/* -------------------------------------------------------------------------- */
+
+
 
 /* -------------------------------------------------------------------------- */
