@@ -55,7 +55,6 @@ public class Authentication
             while(!exit && s.hasNext())
             {
                 String str = s.next();
-                System.out.println(str);
                 if (!str.isEmpty() && !str.equals("/r"))
                 {
                     try

@@ -77,7 +77,7 @@ public class Fetcher
             PrintWriter writer = null;
             try {
 
-                int c = 0;
+                int c = 0, tmp = 0;
                 long printIntervalMin =
                         TimeUnit.MILLISECONDS.toMinutes(printInterval);
 
@@ -98,11 +98,12 @@ public class Fetcher
 
                     synchronized (counter)
                     {
-                        c = counter;
+                        tmp = counter;
                     }
 
-                    float result = ((float) c) / printIntervalMin;
+                    float result = ((float) (tmp - c)) / printIntervalMin;
                     writer.println(result);
+                    c = tmp;
                 }
             }
             catch (Exception e)
