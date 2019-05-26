@@ -34,7 +34,7 @@ public class Main
                             "src/main/resources/output.txt");
 
             String[] lang = {};
-            String[] countries = {"us"};
+            String[] countries = {"uk"};
             f.start(new HashSet<>(Arrays.asList(countries)),
                     new HashSet<>(Arrays.asList(lang)));
         }
