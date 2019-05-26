@@ -2,14 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="34279149-16cc-4f7c-a519-df7bd91960ef" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../fetcher/project/src/main/resources/output.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../fetcher/project/src/main/java/Authentication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../fetcher/project/src/main/java/Authentication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../fetcher/project/src/main/java/Fetcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/../fetcher/project/src/main/java/Fetcher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../fetcher/project/src/main/java/Fetcher2.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../fetcher/project/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../fetcher/project/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../fetcher/project/src/main/resources/auth.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../fetcher/project/src/main/resources/auth.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Processor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Processor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fetcher/project/src/main/resources/output.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../fetcher/project/src/main/resources/output.txt" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -53,11 +49,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/Processor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2430">
-              <caret line="179" selection-start-line="179" selection-end-line="179" />
+            <state relative-caret-position="533">
+              <caret line="183" column="48" selection-start-line="183" selection-start-column="48" selection-end-line="183" selection-end-column="48" />
             </state>
           </provider>
         </entry>
@@ -156,7 +152,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="820">
@@ -378,13 +374,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/twitter/json/Photo.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/Processor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2430">
-          <caret line="179" selection-start-line="179" selection-end-line="179" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ggcdspark.iml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
@@ -467,6 +456,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="820">
           <caret line="79" column="21" selection-start-line="79" selection-start-column="21" selection-end-line="79" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Processor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="533">
+          <caret line="183" column="48" selection-start-line="183" selection-start-column="48" selection-end-line="183" selection-end-column="48" />
         </state>
       </provider>
     </entry>

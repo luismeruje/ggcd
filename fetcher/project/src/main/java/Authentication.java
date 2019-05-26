@@ -3,20 +3,38 @@
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 
-import javax.crypto.*;
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.*;
+import javax.crypto.NoSuchPaddingException;
+
 import java.security.AlgorithmParameters;
 import java.security.spec.AlgorithmParameterSpec;
-import java.security.NoSuchAlgorithmException;
 import java.security.spec.KeySpec;
-import java.util.InputMismatchException;
+import java.security.NoSuchAlgorithmException;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+
 import java.util.Scanner;
+import java.util.InputMismatchException;
 
 /* -------------------------------------------------------------------------- */
 
+/**
+ * The Authentication class is responsible the storage and retrieval of the
+ * parameters needed for authentication in the twitter stream.
+ *
+ * @author Ângela Amorim
+ * @author Fábio Fontes
+ * @author Luís Ferreira
+ */
 public class Authentication
 {
 
@@ -29,7 +47,8 @@ public class Authentication
 
         try
         {
-            SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+            SecretKeyFactory factory =
+                    SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
 
             System.out.println("Insert the password or write /r to go back:");
 
@@ -39,7 +58,6 @@ public class Authentication
                 System.out.println(str);
                 if (!str.isEmpty() && !str.equals("/r"))
                 {
-
                     try
                     {
                         KeySpec spec = new PBEKeySpec(str.toCharArray(),
@@ -67,10 +85,9 @@ public class Authentication
                     System.out.println("Invalid input");
                 }
 
-                System.out.println("Insert the password or write /r to go back:");
+                if (!exit)
+                    System.out.println("Insert the password or write /r to go back:");
             }
-
-
         }
         catch(NoSuchAlgorithmException e)
         {
@@ -78,7 +95,6 @@ public class Authentication
         }
 
         return initiated;
-
     }
 
     private static String getNonEmptyString(String prompted, Scanner s)
@@ -103,6 +119,8 @@ public class Authentication
         return result;
     }
 
+    /* ---------------------------------------------------------------------- */
+
     public static void register(Cipher c,
                                 Scanner s,
                                 String filename)
@@ -117,30 +135,35 @@ public class Authentication
             if (initCipher(s, c, Cipher.ENCRYPT_MODE, null)) {
 
                 AlgorithmParameters params = c.getParameters();
-                byte[] iv = params.getParameterSpec(IvParameterSpec.class).getIV();
+                byte[] iv =
+                        params.getParameterSpec(IvParameterSpec.class).getIV();
                 writer.writeInt(iv.length);
                 writer.write(iv, 0, iv.length);
 
                 byte[] key = c.doFinal(
-                        getNonEmptyString("Insert the Consumer API key:", s)
+                        getNonEmptyString(
+                                "Insert the Consumer API key:", s)
                         .getBytes("UTF-8"));
                 writer.writeInt(key.length);
                 writer.write(key, 0, key.length);
 
                 byte[] secretKey = c.doFinal(
-                        getNonEmptyString("Insert the Consumer API secret key:", s)
+                        getNonEmptyString(
+                        "Insert the Consumer API secret key:", s)
                         .getBytes("UTF-8"));
                 writer.writeInt(secretKey.length);
                 writer.write(secretKey, 0, secretKey.length);
 
                 byte[] token = c.doFinal(
-                        getNonEmptyString("Insert the Access Token:", s)
+                        getNonEmptyString(
+                                "Insert the Access Token:", s)
                         .getBytes("UTF-8"));
                 writer.writeInt(token.length);
                 writer.write(token, 0, token.length);
 
                 byte[] tokenSecret = c.doFinal(
-                        getNonEmptyString("Insert the Access Token secret:", s)
+                        getNonEmptyString(
+                                "Insert the Access Token secret:", s)
                         .getBytes("UTF-8"));
                 writer.writeInt(tokenSecret.length);
                 writer.write(tokenSecret, 0, tokenSecret.length);
@@ -149,7 +172,6 @@ public class Authentication
                 writer.close();
 
                 System.out.println("Registration successful");
-
             }
             else
             {
@@ -160,8 +182,8 @@ public class Authentication
         {
             e.printStackTrace();
         }
-
     }
+
 
     public static Configuration authenticate(Cipher c,
                                              Scanner s,
@@ -178,7 +200,8 @@ public class Authentication
             byte[] iv = new byte[ivSize];
             reader.read(iv);
 
-            if (initCipher(s, c, Cipher.DECRYPT_MODE, new IvParameterSpec(iv))) {
+            if (initCipher(s, c, Cipher.DECRYPT_MODE, new IvParameterSpec(iv)))
+            {
 
                 int keySize = reader.readInt();
                 byte[] key = new byte[keySize];
@@ -224,33 +247,33 @@ public class Authentication
         }
 
         return config;
-
     }
+
+    /* ---------------------------------------------------------------------- */
 
     private static void printMenu()
     {
-        System.out.println("Insert the number of the action you wish to execute:");
+        System.out.println(
+                "Insert the number of the action you wish to execute:");
         System.out.println("Login - 1");
         System.out.println("Register - 2");
         System.out.println("Quit - 3");
     }
 
-    public static Configuration authentication() throws NoSuchAlgorithmException, NoSuchPaddingException
+    public static Configuration authentication()
+            throws NoSuchAlgorithmException, NoSuchPaddingException
     {
-
-
         Configuration config = null;
         boolean exit = false;
         String filename = "src/main/resources/auth.txt";
-        Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
 
+        Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
         Scanner s = new Scanner(System.in);
 
         printMenu();
 
         while(!exit && s.hasNext())
         {
-
             try
             {
                 int o = s.nextInt();
@@ -268,22 +291,19 @@ public class Authentication
 
                     case 3:
                         exit = true;
-
                 }
-
             }
             catch(InputMismatchException e)
             {
                 System.out.println("Invalid option");
             }
 
-
             if (!exit)
                 printMenu();
-
         }
 
         return config;
-
     }
 }
+
+/* -------------------------------------------------------------------------- */

@@ -1,28 +1,37 @@
-
-
-
-
 /* -------------------------------------------------------------------------- */
 
-import twitter4j.*;
+import twitter4j.TwitterStream;
+import twitter4j.TwitterStreamFactory;
+
+import twitter4j.RawStreamListener;
+import twitter4j.FilterQuery;
+
 import twitter4j.conf.Configuration;
 
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
-import java.net.InetAddress;
-import java.net.Socket;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
 import java.util.concurrent.TimeUnit;
 
+/* -------------------------------------------------------------------------- */
 
+/**
+ * The Fetcher class is responsible for the consumption of the twitter stream
+ * based on a combination of countries an languages.
+ *
+ * @author Ângela Amorim
+ * @author Fábio Fontes
+ * @author Luís Ferreira
+ */
 public class Fetcher
 {
     private TwitterStream twitter;
 
-    private int nListerners;
     private List<RawListener> listeners;
-
 
     /* ---------------------------------------------------------------------- */
 
@@ -32,6 +41,7 @@ public class Fetcher
 
         private Thread statsT;
 
+        /* ------------------------------------------------------------------ */
 
         RawListener(final long printInterval, final String filename)
         {
@@ -42,6 +52,25 @@ public class Fetcher
             );
             this.statsT.start();
         }
+
+        /* ------------------------------------------------------------------ */
+
+        @Override
+        public void onMessage(String str)
+        {
+            counter++;
+
+            // TODO
+
+        }
+
+        @Override
+        public void onException(Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        /* ------------------------------------------------------------------ */
 
         public void printStats(final long printInterval, final String filename)
         {
@@ -54,7 +83,9 @@ public class Fetcher
 
 
                 if (filename != null)
-                    writer = new PrintWriter(new FileOutputStream(filename, true), true);
+                    writer = new PrintWriter(new FileOutputStream(filename,
+                            true),
+                            true);
                 else
                     writer = new PrintWriter(System.out, true);
 
@@ -63,6 +94,8 @@ public class Fetcher
 
                 while(true)
                 {
+                    Thread.sleep(printInterval);
+
                     synchronized (counter)
                     {
                         c = counter;
@@ -70,8 +103,6 @@ public class Fetcher
 
                     float result = ((float) c) / printIntervalMin;
                     writer.println(result);
-
-                    Thread.currentThread().sleep(printInterval);
                 }
             }
             catch (Exception e)
@@ -85,24 +116,6 @@ public class Fetcher
                     writer.close();
                 }
             }
-
-
-        }
-
-        @Override
-        public void onMessage(String str)
-        {
-            counter++;
-
-            // TODO
-            System.out.println(str);
-            //System.out.println(counter);
-        }
-
-        @Override
-        public void onException(Exception e)
-        {
-            e.printStackTrace();
         }
 
     }
@@ -114,37 +127,32 @@ public class Fetcher
                    long printInterval,
                    String filename)
     {
-        try {
-
-            //this.socket = new Socket(address, port);
+        try
+        {
             this.twitter = new TwitterStreamFactory(config).getInstance();
 
-            this.nListerners = nListerners;
             this.listeners = new ArrayList<RawListener>();
             for (int i = 0; i < nListerners; ++i) {
                 RawListener l = new RawListener(printInterval, filename);
                 this.twitter.addListener(l);
                 this.listeners.add(l);
             }
-
         }
         catch(Exception e)
         {
-
         }
-
     }
 
     /* ---------------------------------------------------------------------- */
 
-    public void start(String[] countries, String[] lang)
+    public void start(Set<String> countries, Set<String> languages)
     {
         FilterQuery query = new FilterQuery();
 
         double[] southwestcornerPT = {-9.52657060387, 36.838268541};
         double[] northeastcornerPT = {-6.3890876937, 42.280468655};
 
-        double[] southwestcornerUS= {-171.791110603, 18.91619};
+        double[] southwestcornerUS = {-171.791110603, 18.91619};
         double[] northeastcornerUS = {-66.96466, 71.3577635769};
 
         double[] southwestcornerES= {-9.39288367353, 35.946850084};
@@ -156,22 +164,40 @@ public class Fetcher
         double[] southwestcornerFR = {-54.5247541978, 2.05338918702};
         double[] northeastcornerFR = {9.56001631027, 51.1485061713};
 
-        for(country : countries) {
-            switch (country) {
-                //query.locations(southwestcornerPT, northeastcornerPT);
-                query.locations(southwestcornerUS, northeastcornerUS);
-                //query.locations(southwestcornerES, northeastcornerES);
-                //query.locations(southwestcornerUK, northeastcornerUK);
-                //query.locations(southwestcornerFR, northeastcornerFR);
+        double[] southwestcornerBR = {-73.9872354804, -33.7683777809};
+        double[] northeastcornerBR = {-34.7299934555, 5.24448639569};
+
+        for(String country : countries)
+        {
+            switch (country)
+            {
+                case "pt":
+                    query.locations(southwestcornerPT, northeastcornerPT);
+                    break;
+                case "us":
+                    query.locations(southwestcornerUS, northeastcornerUS);
+                    break;
+                case "es":
+                    query.locations(southwestcornerES, northeastcornerES);
+                    break;
+                case "uk":
+                    query.locations(southwestcornerUK, northeastcornerUK);
+                    break;
+                case "fr":
+                    query.locations(southwestcornerFR, northeastcornerFR);
+                    break;
+                case "br":
+                    query.locations(southwestcornerBR, northeastcornerBR);
             }
         }
-        //query.language("en");
+
+        for(String lang : languages)
+        {
+            query.language(lang);
+        }
+
         this.twitter.filter(query);
     }
-
-    /* ---------------------------------------------------------------------- */
-
-
 }
 
 /* -------------------------------------------------------------------------- */
