@@ -1,9 +1,10 @@
 package twitter.json;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Entities {
+public class Entities implements Serializable {
     private List<Hashtag> hashtags = new ArrayList<>();
 
     public List<Hashtag> getHashtags() {

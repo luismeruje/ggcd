@@ -1,0 +1,71 @@
+- name: install java, daemon and pip3
+  apt:
+    force_apt_get: yes
+    update_cache: yes
+    name: default-jdk,daemon,python3-pip
+
+
+- name: download spark tar archive
+  get_url:
+    url: http://mirrors.up.pt/pub/apache/spark/spark-2.4.3/spark-2.4.3-bin-hadoop2.7.tgz
+    dest: /home/spark/spark-2.4.3-bin-hadoop2.7.tgz
+
+- name: untar archive
+  unarchive:
+    src: /home/spark/spark-2.4.3-bin-hadoop2.7.tgz
+    dest: /home/spark/
+    remote_src: yes
+
+- name: add variables to .bashrc
+  lineinfile:
+    path: /home/spark/.bashrc
+    line: "{{ item.line }}"
+  with_items:
+    - { line: 'SPARK_HOME=/home/spark/spark-2.4.3-bin-hadoop2.7/bin'}
+    - { line: 'export PATH=$SPARK_HOME/bin:$PATH'}
+
+- name: source bashrc
+  sudo: no   
+  shell: source /home/spark/.bashrc
+  args:
+     executable: /bin/bash
+
+- name: remove outdated guava dependency
+  file:
+    state: absent
+    path: /home/spark/spark-2.4.3-bin-hadoop2.7/jars/guava-14.0.1.jar
+
+- name: download up to date guava dependency
+  get_url:
+    url: http://central.maven.org/maven2/com/google/guava/guava/27.1-jre/guava-27.1-jre.jar
+    dest: /home/spark/spark-2.4.3-bin-hadoop2.7/jars/guava-27.1-jre.jar
+
+- name: make sure spark-slave is off
+  shell: /home/spark/spark-2.4.3-bin-hadoop2.7/sbin/stop-slave.sh
+
+- name: start spark-slave
+  shell: /home/spark/spark-2.4.3-bin-hadoop2.7/sbin/start-slave.sh spark://{{ groups['spark-master'][0] }}:7077
+  args:
+     executable: /bin/bash
+
+- name: pull git repository
+  git:
+    repo: https://github.com/luismeruje/ggcd.git
+    dest: /home/spark/ggcd
+
+- name: run image classifier service daemon
+  shell: daemon -- python /home/spark/ggcd/image_classification/image_classification_service.py
+
+- name: install pip modules
+  shell: sudo -H pip3 install --upgrade pip
+
+- name: install pip modules
+  shell: sudo pip3 install --upgrade tensorflow matplotlib numpy scipy scikit-learn pillow h5py protobuf
+
+- name: install keras module
+  shell: sudo pip3 install keras
+
+- name: run image classifier
+  shell: nohup python3 image_classification_service.py &
+  args:
+     chdir: /home/spark/ggcd/image_classification/

@@ -1,5 +1,8 @@
 package bigquery;
 
+
+
+
 import com.google.cloud.bigquery.*;
 import twitter.json.Hashtag;
 import twitter.json.Media;
@@ -13,20 +16,20 @@ import java.util.List;
 import java.util.Map;
 
 public class ResultRegistryManagerBigQueryImp{ // implements ResultRegistryManager {
-    BigQuery bigquery = BigQueryOptions.getDefaultInstance().getService();
+    private static BigQuery bigquery = BigQueryOptions.getDefaultInstance().getService();
 
-    public void registerTweet(Tweet tweet){
+    public static void registerTweet(Tweet tweet){
         String datasetName = "ggcd";
         insertIntoTweetTable(tweet,bigquery,datasetName);
         insertIntoHashtagTable(tweet,bigquery,datasetName);
     }
 
-    public void registerImageLabel(Tweet tweet, Map<String, List<String>> labelsMap){
+    public static void registerImageLabel(Tweet tweet, Map<String, List<String>> labelsMap){
         String datasetName = "ggcd";
         labelsMap.forEach((imageReference,labels)-> insertIntoImageTable(imageReference,labels,tweet.getId_str(),bigquery,datasetName));
     }
 
-    private void insertIntoTweetTable(Tweet tweet, BigQuery bigquery, String datasetName){
+    private static void insertIntoTweetTable(Tweet tweet, BigQuery bigquery, String datasetName){
         TableId tweetTableId = TableId.of(datasetName,"tweet");
         Map<String,Object> row = new HashMap<>();
 
@@ -44,7 +47,7 @@ public class ResultRegistryManagerBigQueryImp{ // implements ResultRegistryManag
         executeInsert(row,bigquery,tweetTableId);
     }
 
-    private void insertIntoHashtagTable(Tweet tweet, BigQuery bigquery,String datasetName){
+    private static void insertIntoHashtagTable(Tweet tweet, BigQuery bigquery,String datasetName){
         Map<String,Object> row = new HashMap<>();
         TableId hashtagTableId = TableId.of(datasetName,"hashtag");
         row.put("tweet_id",tweet.getId_str());
@@ -55,7 +58,7 @@ public class ResultRegistryManagerBigQueryImp{ // implements ResultRegistryManag
 
     }
 
-    private void insertIntoImageTable(String imageReference, List<String> labels, String tweet_id, BigQuery bigquery,String datasetName){
+    private static  void insertIntoImageTable(String imageReference, List<String> labels, String tweet_id, BigQuery bigquery,String datasetName){
         Map<String,Object> row = new HashMap<>();
         TableId imageTableId = TableId.of(datasetName,"image");
         row.put("reference",imageReference);
@@ -68,7 +71,7 @@ public class ResultRegistryManagerBigQueryImp{ // implements ResultRegistryManag
     }
 
     //TODO: group inserts
-    private void executeInsert(Map<String,Object> row, BigQuery bigquery, TableId tableId){
+    private static void executeInsert(Map<String,Object> row, BigQuery bigquery, TableId tableId){
 
         InsertAllResponse insertResponse = bigquery.insertAll(InsertAllRequest.newBuilder(tableId).addRow(row).build());
         if (insertResponse.hasErrors()) {

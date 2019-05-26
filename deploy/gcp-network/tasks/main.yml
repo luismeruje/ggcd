@@ -18,7 +18,9 @@
           - 5601
           - 443
           - 2222
+          - 7077
           - 8080
+          - 8081
       - ip_protocol: icmp
     network: "global/networks/{{ network.name }}"
     project: "{{ gcp_project }}"
@@ -31,18 +33,6 @@
     name: "internal-rules"
     allowed:
       - ip_protocol: tcp
-        ports:
-          - 5432
-          - 5000
-          - 5601
-          - 8075
-          - 9200
-          - 5044
-          - 26379
-          - 6379
-          - 443
-          - 8080
-      - ip_protocol: 112
     source_ranges:
       - 10.0.0.0/8
     network: "global/networks/{{ network.name }}"

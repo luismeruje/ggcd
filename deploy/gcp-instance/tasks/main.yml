@@ -52,19 +52,20 @@
     auth_kind: "{{ gcp_cred_kind }}"
     service_account_file: "{{ gcp_cred_file }}"
     service_accounts:
-      - scopes: ['https://www.googleapis.com/auth/compute']
+      - scopes: ['https://www.googleapis.com/auth/compute','https://www.googleapis.com/auth/bigquery'] 
     can_ip_forward: true
     state: present
   register: instance
   loop: "{{ instances }}"
   when: external_ip
 
-- name: Add hosts to in memory inventory (external IP)
-  add_host:
-    name: "{{ item.networkInterfaces[0].accessConfigs[0].natIP }}"
-    groups: "{{ item.tags['items'] | join(',') }}"
-  loop: "{{ instance.results }}"
-  when: external_ip
+
+#- name: Add hosts to in memory inventory (external IP)
+#  add_host:
+#    name: "{{ item.networkInterfaces[0].accessConfigs[0].natIP }}"
+#    groups: "{{ item.tags['items'] | join(',') }}"
+#  loop: "{{ instance.results }}"
+#  when: external_ip
 
 - name: create an instance without external ip
   gcp_compute_instance:
@@ -90,18 +91,41 @@
     auth_kind: "{{ gcp_cred_kind }}"
     service_account_file: "{{ gcp_cred_file }}"
     service_accounts:
-      - scopes: ['https://www.googleapis.com/auth/compute']
+      - scopes: ['https://www.googleapis.com/auth/compute','https://www.googleapis.com/auth/bigquery']
     can_ip_forward: true
     state: present
   register: instance
   loop: "{{ instances }}"
   when: not(external_ip)
   
-- name: Add hosts to in memory inventory (internal IP)
-  add_host:
-    name: "{{ item.networkInterfaces[0].networkIP }}"
-    groups: "{{ item.tags['items'] | join(',') }}"
-  loop: "{{ instance.results }}"
-  when: not(external_ip)
+#- name: Add hosts to in memory inventory (internal IP)
+#  add_host:
+#    name: "{{ item.networkInterfaces[0].networkIP }}"
+#    groups: "{{ item.tags['items'] | join(',') }}"
+#  loop: "{{ instance.results }}"
+#  when: not(external_ip)
+- name: Gather gcp instances facts
+  gcp_compute_instance_facts:
+    zone: "{{ gcp_zone }}"
+    project: "{{ gcp_project }}"
+    auth_kind: "{{ gcp_cred_kind }}"
+    service_account_file: "{{ gcp_cred_file }}"
+    scopes: ['https://www.googleapis.com/auth/compute']
+  register: info
+
+- debug:
+    var: address
+
+- debug:
+    var: instance
+
+- debug:
+    var: info
+
+- name: Add hosts to groupname
+  add_host: 
+    name: "{{ item.networkInterfaces[0].accessConfigs[0].natIP }}" 
+    groupname: "{{ item.tags['items'] | join(',') }}"
+  loop: "{{ info['items'] }}"
 
 

@@ -1,9 +1,10 @@
 package twitter.json;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Media {
+public class Media implements Serializable {
     private String media_url;
     private String type;
 

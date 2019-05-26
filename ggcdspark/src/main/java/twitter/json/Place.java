@@ -1,6 +1,8 @@
 package twitter.json;
 
-public class Place {
+import java.io.Serializable;
+
+public class Place implements Serializable {
     String full_name;
     String country_code;
 

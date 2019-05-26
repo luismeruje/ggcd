@@ -1,6 +1,8 @@
 package twitter.json;
 
-public class Tweet {
+import java.io.Serializable;
+
+public class Tweet implements Serializable {
     private String id_str;
     private String timestamp_ms;
     private String text;

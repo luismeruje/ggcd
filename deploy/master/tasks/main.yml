@@ -1,0 +1,48 @@
+- name: install java
+  apt:
+    force_apt_get: yes
+    update_cache: yes
+    name: default-jdk
+
+
+- name: download spark tar archive
+  get_url:
+    url: http://mirrors.up.pt/pub/apache/spark/spark-2.4.3/spark-2.4.3-bin-hadoop2.7.tgz
+    dest: /home/spark/spark-2.4.3-bin-hadoop2.7.tgz
+
+- name: untar archive
+  unarchive:
+    src: /home/spark/spark-2.4.3-bin-hadoop2.7.tgz
+    dest: /home/spark/
+    remote_src: yes
+
+- name: add variables to .bashrc
+  lineinfile:
+    path: /home/spark/.bashrc
+    line: "{{ item.line }}"
+  with_items:
+    - { line: 'SPARK_HOME=/home/spark/spark-2.4.3-bin-hadoop2.7/bin'}
+    - { line: 'export PATH=$SPARK_HOME/bin:$PATH'}
+
+- name: source bashrc
+  sudo: no   
+  shell: source /home/spark/.bashrc
+  args:
+     executable: /bin/bash
+
+- name: remove outdated guava dependency
+  file:
+    state: absent
+    path: /home/spark/spark-2.4.3-bin-hadoop2.7/jars/guava-14.0.1.jar
+
+- name: download up to date guava dependency
+  get_url:
+    url: http://central.maven.org/maven2/com/google/guava/guava/27.1-jre/guava-27.1-jre.jar
+    dest: /home/spark/spark-2.4.3-bin-hadoop2.7/jars/guava-27.1-jre.jar
+
+- name: make sure spark-master is off
+  shell: /home/spark/spark-2.4.3-bin-hadoop2.7/sbin/stop-master.sh
+
+- name: start spark-master
+  shell: /home/spark/spark-2.4.3-bin-hadoop2.7/sbin/start-master.sh --host 0.0.0.0
+

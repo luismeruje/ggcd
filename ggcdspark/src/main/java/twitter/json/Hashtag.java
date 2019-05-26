@@ -1,6 +1,8 @@
 package twitter.json;
 
-public class Hashtag {
+import java.io.Serializable;
+
+public class Hashtag implements Serializable {
     String text;
 
     public String getText() {
