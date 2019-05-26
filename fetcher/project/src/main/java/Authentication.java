@@ -4,13 +4,14 @@ import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 
 import javax.crypto.*;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
-import java.security.InvalidKeyException;
+import java.security.AlgorithmParameters;
+import java.security.spec.AlgorithmParameterSpec;
 import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
-import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -21,7 +22,8 @@ public class Authentication
 
     private static boolean initCipher(Scanner s,
                                       Cipher c,
-                                      int opMode)
+                                      int opMode,
+                                      AlgorithmParameterSpec sp)
     {
         boolean exit = false, initiated = false;
 
@@ -34,19 +36,21 @@ public class Authentication
             while(!exit && s.hasNext())
             {
                 String str = s.next();
+                System.out.println(str);
                 if (!str.isEmpty() && !str.equals("/r"))
                 {
-                    KeySpec spec;
-                    char[] passwd;
-
-                    passwd = s.next().toCharArray();
-                    spec = new PBEKeySpec(passwd);
-                    Arrays.fill(passwd, ' ');
 
                     try
                     {
-                        SecretKey key = factory.generateSecret(spec);
-                        c.init(opMode, key);
+                        KeySpec spec = new PBEKeySpec(str.toCharArray(),
+                                "ggcd1819".getBytes("UTF-8"),
+                                65536,
+                                256);
+
+                        SecretKey tmp = factory.generateSecret(spec);
+                        SecretKey secret = new SecretKeySpec(tmp.getEncoded(), "AES");
+
+                        c.init(opMode, secret, sp);
                         initiated = exit = true;
                     }
                     catch(Exception e)
@@ -77,34 +81,85 @@ public class Authentication
 
     }
 
+    private static String getNonEmptyString(String prompted, Scanner s)
+    {
+        String result = null;
+        boolean exit = false;
+
+        System.out.println(prompted);
+        while(!exit && s.hasNext())
+        {
+            String tmp = s.next();
+            if (!tmp.isEmpty())
+            {
+                result = tmp;
+                exit = true;
+            }
+
+            if (!exit)
+                System.out.println(prompted);
+        }
+
+        return result;
+    }
+
     public static void register(Cipher c,
                                 Scanner s,
                                 String filename)
     {
-        boolean exit = false;
-        if (initCipher(s, c, Cipher.ENCRYPT_MODE))
-        {
+        try {
 
-            while(!exit)
-            {
-                String str = s.next();
+            DataOutputStream writer = new DataOutputStream(
+                    new FileOutputStream(filename, false));
 
-                System.out.println("Insert the Consumer API key:");
+            writer.writeBytes("");
 
+            if (initCipher(s, c, Cipher.ENCRYPT_MODE, null)) {
 
-                System.out.println("Insert the Consumer API secret key:");
-                System.out.println("Insert the Access Token:");
-                System.out.println("Insert the Access Token secret:");
+                AlgorithmParameters params = c.getParameters();
+                byte[] iv = params.getParameterSpec(IvParameterSpec.class).getIV();
+                writer.writeInt(iv.length);
+                writer.write(iv, 0, iv.length);
+
+                byte[] key = c.doFinal(
+                        getNonEmptyString("Insert the Consumer API key:", s)
+                        .getBytes("UTF-8"));
+                writer.writeInt(key.length);
+                writer.write(key, 0, key.length);
+
+                byte[] secretKey = c.doFinal(
+                        getNonEmptyString("Insert the Consumer API secret key:", s)
+                        .getBytes("UTF-8"));
+                writer.writeInt(secretKey.length);
+                writer.write(secretKey, 0, secretKey.length);
+
+                byte[] token = c.doFinal(
+                        getNonEmptyString("Insert the Access Token:", s)
+                        .getBytes("UTF-8"));
+                writer.writeInt(token.length);
+                writer.write(token, 0, token.length);
+
+                byte[] tokenSecret = c.doFinal(
+                        getNonEmptyString("Insert the Access Token secret:", s)
+                        .getBytes("UTF-8"));
+                writer.writeInt(tokenSecret.length);
+                writer.write(tokenSecret, 0, tokenSecret.length);
+
+                writer.flush();
+                writer.close();
+
+                System.out.println("Registration successful");
+
             }
-
+            else
+            {
+                System.out.println("Registration unsuccessful");
+            }
         }
-        else
+        catch(Exception e)
         {
-            System.out.println("Registeration unsuccessful");
+            e.printStackTrace();
         }
-
-
-
 
     }
 
@@ -112,31 +167,58 @@ public class Authentication
                                              Scanner s,
                                              String filename)
     {
-
         Configuration config = null;
 
-        if (initCipher(s, c, Cipher.DECRYPT_MODE))
+        try
         {
-            try
-            {
-                BufferedReader reader =
-                        new BufferedReader(new FileReader(filename));
+            DataInputStream reader =
+                    new DataInputStream(new FileInputStream(filename));
+
+            int ivSize = reader.readInt();
+            byte[] iv = new byte[ivSize];
+            reader.read(iv);
+
+            if (initCipher(s, c, Cipher.DECRYPT_MODE, new IvParameterSpec(iv))) {
+
+                int keySize = reader.readInt();
+                byte[] key = new byte[keySize];
+                reader.read(key);
+
+                int secretKeySize = reader.readInt();
+                byte[] secretKey = new byte[secretKeySize];
+                reader.read(secretKey);
+
+                int tokenSize = reader.readInt();
+                byte[] token = new byte[tokenSize];
+                reader.read(token);
+
+                int tokenSecretSize = reader.readInt();
+                byte[] tokenSecret = new byte[tokenSecretSize];
+                reader.read(tokenSecret);
+
+                reader.close();
 
                 ConfigurationBuilder cb = new ConfigurationBuilder();
                 cb.setDebugEnabled(true)
-                        .setOAuthConsumerKey(new String(c.doFinal(reader.readLine().getBytes())))
-                        .setOAuthConsumerSecret(new String(c.doFinal(reader.readLine().getBytes())))
-                        .setOAuthAccessToken(new String(c.doFinal(reader.readLine().getBytes())))
-                        .setOAuthAccessTokenSecret(new String(c.doFinal(reader.readLine().getBytes())));
+                        .setOAuthConsumerKey(new String(
+                                c.doFinal(key), "UTF-8"))
+                        .setOAuthConsumerSecret(new String(
+                                c.doFinal(secretKey), "UTF-8"))
+                        .setOAuthAccessToken(new String(
+                                c.doFinal(token), "UTF-8"))
+                        .setOAuthAccessTokenSecret(new String(
+                                c.doFinal(tokenSecret), "UTF-8"));
 
                 config = cb.build();
+
+                System.out.println("Authentication Successful");
             }
-            catch(Exception e)
+            else
             {
                 System.out.println("Authentication unsuccessful");
             }
         }
-        else
+        catch(Exception e)
         {
             System.out.println("Authentication unsuccessful");
         }
@@ -159,7 +241,7 @@ public class Authentication
 
         Configuration config = null;
         boolean exit = false;
-        String filename = "auth.txt";
+        String filename = "src/main/resources/auth.txt";
         Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
 
         Scanner s = new Scanner(System.in);

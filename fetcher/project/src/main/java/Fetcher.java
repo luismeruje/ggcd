@@ -4,16 +4,16 @@
 
 /* -------------------------------------------------------------------------- */
 
-import twitter4j.FilterQuery;
-import twitter4j.RawStreamListener;
-import twitter4j.TwitterStream;
-import twitter4j.TwitterStreamFactory;
+import twitter4j.*;
 import twitter4j.conf.Configuration;
 
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 public class Fetcher
@@ -21,33 +21,80 @@ public class Fetcher
     private TwitterStream twitter;
 
     private int nListerners;
-    private List<Listener> listeners;
+    private List<RawListener> listeners;
 
-    private Socket socket;
-
-    private Configuration config;
-    private FilterQuery query;
-    private String lang;
 
     /* ---------------------------------------------------------------------- */
 
-    class Listener implements RawStreamListener {
+    class RawListener implements RawStreamListener {
 
-        private long counter;
+        private Integer counter;
 
-//        private Thread statsT;
+        private Thread statsT;
 
-        //Listener(long printInterval)
-        //{
 
-        //}
+        RawListener(final long printInterval, final String filename)
+        {
+            this.counter = 0;
+
+            this.statsT = new Thread(
+                    () -> printStats(printInterval, filename)
+            );
+            this.statsT.start();
+        }
+
+        public void printStats(final long printInterval, final String filename)
+        {
+            PrintWriter writer = null;
+            try {
+
+                int c = 0;
+                long printIntervalMin =
+                        TimeUnit.MILLISECONDS.toMinutes(printInterval);
+
+
+                if (filename != null)
+                    writer = new PrintWriter(new FileOutputStream(filename, true), true);
+                else
+                    writer = new PrintWriter(System.out, true);
+
+                writer.println("Begin");
+                writer.println(printIntervalMin);
+
+                while(true)
+                {
+                    synchronized (counter)
+                    {
+                        c = counter;
+                    }
+
+                    float result = ((float) c) / printIntervalMin;
+                    writer.println(result);
+
+                    Thread.currentThread().sleep(printInterval);
+                }
+            }
+            catch (Exception e)
+            {
+            }
+            finally
+            {
+                if (writer != null)
+                {
+                    writer.println("End");
+                    writer.close();
+                }
+            }
+
+
+        }
 
         @Override
         public void onMessage(String str)
         {
             counter++;
 
-
+            // TODO
             System.out.println(str);
             //System.out.println(counter);
         }
@@ -63,19 +110,19 @@ public class Fetcher
     /* ---------------------------------------------------------------------- */
 
     public Fetcher(Configuration config,
-                   int nListerners)
+                   int nListerners,
+                   long printInterval,
+                   String filename)
     {
         try {
 
             //this.socket = new Socket(address, port);
-
-            this.config = config;
             this.twitter = new TwitterStreamFactory(config).getInstance();
 
             this.nListerners = nListerners;
-            this.listeners = new ArrayList<Listener>();
+            this.listeners = new ArrayList<RawListener>();
             for (int i = 0; i < nListerners; ++i) {
-                Listener l = new Listener();
+                RawListener l = new RawListener(printInterval, filename);
                 this.twitter.addListener(l);
                 this.listeners.add(l);
             }
@@ -90,7 +137,7 @@ public class Fetcher
 
     /* ---------------------------------------------------------------------- */
 
-    public void start()
+    public void start(String[] countries, String[] lang)
     {
         FilterQuery query = new FilterQuery();
 
@@ -109,12 +156,16 @@ public class Fetcher
         double[] southwestcornerFR = {-54.5247541978, 2.05338918702};
         double[] northeastcornerFR = {9.56001631027, 51.1485061713};
 
-        query.locations(southwestcornerPT, northeastcornerPT);
-        //query.locations(southwestcornerUS, northeastcornerUS);
-        query.locations(southwestcornerES, northeastcornerES);
-        query.locations(southwestcornerUK, northeastcornerUK);
-        query.locations(southwestcornerFR, northeastcornerFR);
-        query.language("en");
+        for(country : countries) {
+            switch (country) {
+                //query.locations(southwestcornerPT, northeastcornerPT);
+                query.locations(southwestcornerUS, northeastcornerUS);
+                //query.locations(southwestcornerES, northeastcornerES);
+                //query.locations(southwestcornerUK, northeastcornerUK);
+                //query.locations(southwestcornerFR, northeastcornerFR);
+            }
+        }
+        //query.language("en");
         this.twitter.filter(query);
     }
 

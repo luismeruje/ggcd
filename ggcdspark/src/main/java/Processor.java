@@ -176,8 +176,10 @@ public class Processor {
         }
         resultRegistryManager.registerImageLabel(tweet,imageLabelsMap);
         //imageClassifierStub.classifyImage()
-        
+
+
         /*JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(5));
+
 
         JavaReceiverInputDStream<String> lines = jssc.socketTextStream(\\\"localhost\\\", 9999);
         JavaDStream<Tweet> tweets = lines.map(rdd -> {
