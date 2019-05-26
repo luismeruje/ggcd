@@ -3,11 +3,9 @@ import bigquery.ResultRegistryManagerBigQueryImp;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.google.api.services.bigquery.model.TableRow;
-import com.google.cloud.bigquery.*;
+
 import org.apache.spark.*;
 
-import org.apache.spark.api.java.JavaRDD;
 
 import org.apache.spark.storage.StorageLevel;
 
@@ -16,21 +14,21 @@ import org.apache.spark.streaming.api.java.JavaDStream;
 import org.apache.spark.streaming.api.java.JavaReceiverInputDStream;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
 
+
 import org.apache.spark.streaming.twitter.TwitterUtils;
 import twitter.fetcher.Authentication;
 import twitter.fetcher.Fetcher;
-import twitter.json.Hashtag;
-import twitter.json.Media;
-import twitter.json.Tweet;
+
 import twitter4j.FilterQuery;
 import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.TwitterStream;
 import twitter4j.auth.OAuthAuthorization;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+
+import java.net.URL;
 import java.util.*;
-import java.util.logging.Filter;
+
 
 
 public class Processor {
@@ -187,7 +185,8 @@ public class Processor {
         //imageClassifierStub.classifyImage()
 
         */
-
+        URL loader = TwitterStream.class.getResource("TwitterStream.class");
+        System.out.println("Loaded class from: " + loader);
         List<String> tweetList = new ArrayList<>();
         tweetList.add(jsonTest);
 
@@ -198,6 +197,25 @@ public class Processor {
         SparkConf conf = new SparkConf().setMaster("spark://" + args[0] + ":7077").setAppName("TwitterAnalysis");
 
         JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(5));
+
+        OAuthAuthorization auth = Authentication.authentication(args[1]);
+
+        String[] countries = {"uk"};
+        String[] languages = {};
+        FilterQuery query = Fetcher.getQuery(
+                new HashSet<>(Arrays.asList(countries)),
+                        new HashSet<>(Arrays.asList(languages)));
+
+        JavaReceiverInputDStream<Status> tweets =
+                TwitterUtils.createFilteredStream(jssc,auth,query,StorageLevel.MEMORY_ONLY_SER_2());
+
+        /*Fetcher f = new Fetcher(auth,
+                60000,
+                "src/main/resources/output.txt");
+        f.start(query);*/
+
+        /*JavaDStream<Tweet> tweets = tweets.map(rdd -> {
+            return mapper.readValue(rdd,Tweet.class);
 
         Queue<JavaRDD<String>> rddQueue =
                 new LinkedList<>();
@@ -210,35 +228,23 @@ public class Processor {
         JavaDStream<Tweet> tweets = dStream.map(string -> {
             return mapper.readValue(string,Tweet.class);
         });
-
-        JavaDStream<Tweet> tweets2 = tweets.map(tweet -> {
-            ResultRegistryManagerBigQueryImp.registerTweet(tweet);
-            return tweet;
-/*
-
-
-        JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(5));
-
-        OAuthAuthorization auth = Authentication.authentication();
-
-        String[] countries = {"us"};
-        String[] languages = {};
-        FilterQuery query = Fetcher.getQuery(
-                new HashSet<>(Arrays.asList(countries),
-                new HashSet<>(Arrays.asList(languages))));
-
-        JavaReceiverInputDStream<Status> stream =
-                TwitterUtils.createFilteredStream(jssc, auth, query, StorageLevel.MEMORY_ONLY_SER_2());
-
-        Fetcher f = new Fetcher(auth,
-                     60000,
-                       "src/main/resources/output.txt");
-        f.start(query);
-
-        JavaDStream<Tweet> tweets = tweets.map(rdd -> {
-            return mapper.readValue(rdd,Tweet.class);
-*/
+        */
+        JavaDStream<Status> tweets2 = tweets.map(status -> {
+            ResultRegistryManagerBigQueryImp.registerTweet(status);
+            return status;
         });
+
+        /*JavaDStream<Tweet> tweets3 = tweets2.map(tweet -> {
+            Map<String,List<String>> imageLabelsMap= new HashMap<>();
+            for(Media media: tweet.getExtended_entities().getMedia()){
+                if(media.getType().equals("photo") && media.getMedia_url().endsWith(".jpg")){
+                    List<String> labels = ImageClassifierStub.classifyImage(media.getMedia_url());
+                    imageLabelsMap.put(media.getMedia_url(),labels);
+                }
+            }
+            ResultRegistryManagerBigQueryImp.registerImageLabel(tweet,imageLabelsMap);
+            return tweet;
+        });*/
 
 
         tweets2.print();

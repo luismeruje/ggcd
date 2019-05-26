@@ -41,22 +41,22 @@
     <dependencies>
         <dependency>
             <groupId>org.apache.spark</groupId>
-            <artifactId>spark-core_2.12</artifactId>
+            <artifactId>spark-core_2.11</artifactId>
             <version>2.4.3</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.spark</groupId>
-            <artifactId>spark-streaming_2.12</artifactId>
+            <artifactId>spark-streaming_2.11</artifactId>
             <version>2.4.3</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.bahir/spark-streaming-twitter -->
         <dependency>
-            <groupId>org.apache.bahir</groupId>
-            <artifactId>spark-streaming-twitter_2.11</artifactId>
-            <version>2.3.2</version>
-        </dependency>
+        <groupId>org.apache.bahir</groupId>
+        <artifactId>spark-streaming-twitter_2.11</artifactId>
+        <version>2.3.2</version>
+    </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -84,18 +84,16 @@
             <version>3.7.1</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.twitter4j/twitter4j-stream -->
-        <dependency>
-            <groupId>org.twitter4j</groupId>
-            <artifactId>twitter4j-stream</artifactId>
-            <version>4.0.7</version>
-        </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.twitter4j/twitter4j-core -->
         <dependency>
             <groupId>org.twitter4j</groupId>
             <artifactId>twitter4j-core</artifactId>
-            <version>4.0.7</version>
+            <version>4.0.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.twitter4j</groupId>
+            <artifactId>twitter4j-stream</artifactId>
+            <version>4.0.6</version>
         </dependency>
 
     </dependencies>

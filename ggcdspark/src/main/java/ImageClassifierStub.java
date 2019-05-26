@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ImageClassifierStub{
 
-    Socket socket ;
+    private static Socket socket ;
 
     public ImageClassifierStub() throws Exception{
     }
@@ -19,7 +19,7 @@ public class ImageClassifierStub{
     //Compare google vision speed with pre-trained model speed
     //Compare socket vs pipe speed
     //Change socket to unix pipe(better performance)
-    public List<String> classifyImage(String url) throws Exception {
+    public static List<String> classifyImage(String url) throws Exception {
         socket  = new Socket("localhost",6144);
         ImageReferenceProto.ImageReference imageReference = ImageReferenceProto.ImageReference.newBuilder()
                 .setReference(url).build();

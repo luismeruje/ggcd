@@ -15,6 +15,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import twitter4j.HashtagEntity;
+import twitter4j.Status;
+
 public class ResultRegistryManagerBigQueryImp{ // implements ResultRegistryManager {
     private static BigQuery bigquery = BigQueryOptions.getDefaultInstance().getService();
 
@@ -22,6 +25,12 @@ public class ResultRegistryManagerBigQueryImp{ // implements ResultRegistryManag
         String datasetName = "ggcd";
         insertIntoTweetTable(tweet,bigquery,datasetName);
         insertIntoHashtagTable(tweet,bigquery,datasetName);
+    }
+
+    public static void registerTweet(Status status){
+        String datasetName = "ggcd";
+        insertIntoTweetTable(status,bigquery,datasetName);
+        insertIntoHashtagTable(status,bigquery,datasetName);
     }
 
     public static void registerImageLabel(Tweet tweet, Map<String, List<String>> labelsMap){
@@ -47,11 +56,46 @@ public class ResultRegistryManagerBigQueryImp{ // implements ResultRegistryManag
         executeInsert(row,bigquery,tweetTableId);
     }
 
+    private static void insertIntoTweetTable(Status status, BigQuery bigquery, String datasetName){
+        TableId tweetTableId = TableId.of(datasetName,"tweet");
+        Map<String,Object> row = new HashMap<>();
+
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(status.getCreatedAt().toInstant(), ZoneId.systemDefault());
+        String time = localDateTime.toString().replace("T"," ");
+        //String format or something? Search for a more efficient way
+        //System.out.println(Integer.valueOf(tweet.getTimestamp_ms()));
+        String coordinates = null;
+        if(status.getGeoLocation() != null) {
+            coordinates = "{ \"type\": \"Point\", \"coordinates\": [" + status.getGeoLocation().getLatitude() + "," + status.getGeoLocation().getLongitude() + "] }";
+        }
+
+
+        row.put("reference",String.valueOf(status.getId()));
+        if(status.getPlace() != null)
+            row.put("place", status.getPlace().getFullName());
+        row.put("timestamp", time);
+        if(coordinates != null)
+            row.put("coordinates", coordinates);
+
+        executeInsert(row,bigquery,tweetTableId);
+    }
+
     private static void insertIntoHashtagTable(Tweet tweet, BigQuery bigquery,String datasetName){
         Map<String,Object> row = new HashMap<>();
         TableId hashtagTableId = TableId.of(datasetName,"hashtag");
         row.put("tweet_id",tweet.getId_str());
         for(Hashtag hashtag: tweet.getEntities().getHashtags()) {
+            row.put("text", hashtag.getText());
+            executeInsert(row,bigquery,hashtagTableId);
+        }
+
+    }
+
+    private static void insertIntoHashtagTable(Status status, BigQuery bigquery,String datasetName){
+        Map<String,Object> row = new HashMap<>();
+        TableId hashtagTableId = TableId.of(datasetName,"hashtag");
+        row.put("tweet_id",status.getId());
+        for(HashtagEntity hashtag: status.getHashtagEntities()) {
             row.put("text", hashtag.getText());
             executeInsert(row,bigquery,hashtagTableId);
         }

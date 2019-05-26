@@ -35,7 +35,7 @@ import java.util.Scanner;
 public class Authentication
 {
 
-    private static boolean initCipher(Scanner s,
+    private static boolean initCipher(String password,
                                       Cipher c,
                                       int opMode,
                                       AlgorithmParameterSpec sp)
@@ -49,14 +49,14 @@ public class Authentication
 
             System.out.println("Insert the password or write /r to go back:");
 
-            while(!exit && s.hasNext())
-            {
-                String str = s.next();
-                if (!str.isEmpty() && !str.equals("/r"))
-                {
+           // while(!exit && s.hasNext())
+            //{
+             //   String str = s.next();
+              //  if (!str.isEmpty() && !str.equals("/r"))
+               // {
                     try
                     {
-                        KeySpec spec = new PBEKeySpec(str.toCharArray(),
+                        KeySpec spec = new PBEKeySpec(password.toCharArray(),
                                 "ggcd1819".getBytes("UTF-8"),
                                 65536,
                                 256);
@@ -71,7 +71,7 @@ public class Authentication
                     {
                         System.out.println("Invalid input");
                     }
-                }
+              /*  }
                 else if (str.equals("/r"))
                 {
                     exit = true;
@@ -83,7 +83,8 @@ public class Authentication
 
                 if (!exit)
                     System.out.println("Insert the password or write /r to go back:");
-            }
+                */
+            //}
         }
         catch(NoSuchAlgorithmException e)
         {
@@ -117,7 +118,7 @@ public class Authentication
 
     /* ---------------------------------------------------------------------- */
 
-    public static void register(Cipher c,
+    /*public static void register(Cipher c,
                                 Scanner s,
                                 String filename)
     {
@@ -178,11 +179,11 @@ public class Authentication
         {
             e.printStackTrace();
         }
-    }
+    }*/
 
 
     public static Configuration authenticate(Cipher c,
-                                             Scanner s,
+                                             String password,
                                              String filename)
     {
         Configuration config = null;
@@ -196,7 +197,7 @@ public class Authentication
             byte[] iv = new byte[ivSize];
             reader.read(iv);
 
-            if (initCipher(s, c, Cipher.DECRYPT_MODE, new IvParameterSpec(iv)))
+            if (initCipher(password, c, Cipher.DECRYPT_MODE, new IvParameterSpec(iv)))
             {
 
                 int keySize = reader.readInt();
@@ -256,7 +257,7 @@ public class Authentication
         System.out.println("Quit - 3");
     }
 
-    public static OAuthAuthorization authentication()
+    public static OAuthAuthorization authentication(String password)
             throws NoSuchAlgorithmException, NoSuchPaddingException
     {
         Configuration config = null;
@@ -265,7 +266,7 @@ public class Authentication
         String filename = "src/main/resources/auth.txt";
 
         Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        Scanner s = new Scanner(System.in);
+        /*Scanner s = new Scanner(System.in);
 
         printMenu();
 
@@ -298,6 +299,10 @@ public class Authentication
             if (!exit)
                 printMenu();
         }
+        */
+
+        config = authenticate(c, password , filename);
+
 
         if (config != null)
             auth = new OAuthAuthorization(config);

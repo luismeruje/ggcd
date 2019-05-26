@@ -40,6 +40,11 @@
     url: http://central.maven.org/maven2/com/google/guava/guava/27.1-jre/guava-27.1-jre.jar
     dest: /home/spark/spark-2.4.3-bin-hadoop2.7/jars/guava-27.1-jre.jar
 
+- name: remove outdated protobuf dependency
+  file:
+    state: absent
+    path: /home/spark/spark-2.4.3-bin-hadoop2.7/jars/protobuf-java-2.5.0.jar
+
 - name: make sure spark-master is off
   shell: /home/spark/spark-2.4.3-bin-hadoop2.7/sbin/stop-master.sh
 
