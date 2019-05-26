@@ -6,21 +6,32 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.services.bigquery.model.TableRow;
 import com.google.cloud.bigquery.*;
 import org.apache.spark.*;
+
 import org.apache.spark.api.java.JavaRDD;
+
+import org.apache.spark.storage.StorageLevel;
+
 import org.apache.spark.streaming.Durations;
 import org.apache.spark.streaming.api.java.JavaDStream;
 import org.apache.spark.streaming.api.java.JavaReceiverInputDStream;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
-import scala.Tuple2;
-import scala.Tuple3;
+
+import org.apache.spark.streaming.twitter.TwitterUtils;
+import twitter.fetcher.Authentication;
+import twitter.fetcher.Fetcher;
 import twitter.json.Hashtag;
 import twitter.json.Media;
 import twitter.json.Tweet;
+import twitter4j.FilterQuery;
+import twitter4j.Status;
+import twitter4j.auth.OAuthAuthorization;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.logging.Filter;
+
 
 public class Processor {
     public static void main(String args[]) throws Exception{
@@ -174,6 +185,7 @@ public class Processor {
         }
         resultRegistryManager.registerImageLabel(tweet,imageLabelsMap);
         //imageClassifierStub.classifyImage()
+
         */
 
         List<String> tweetList = new ArrayList<>();
@@ -202,6 +214,30 @@ public class Processor {
         JavaDStream<Tweet> tweets2 = tweets.map(tweet -> {
             ResultRegistryManagerBigQueryImp.registerTweet(tweet);
             return tweet;
+/*
+
+
+        JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(5));
+
+        OAuthAuthorization auth = Authentication.authentication();
+
+        String[] countries = {"us"};
+        String[] languages = {};
+        FilterQuery query = Fetcher.getQuery(
+                new HashSet<>(Arrays.asList(countries),
+                new HashSet<>(Arrays.asList(languages))));
+
+        JavaReceiverInputDStream<Status> stream =
+                TwitterUtils.createFilteredStream(jssc, auth, query, StorageLevel.MEMORY_ONLY_SER_2());
+
+        Fetcher f = new Fetcher(auth,
+                     60000,
+                       "src/main/resources/output.txt");
+        f.start(query);
+
+        JavaDStream<Tweet> tweets = tweets.map(rdd -> {
+            return mapper.readValue(rdd,Tweet.class);
+*/
         });
 
 
