@@ -1,6 +1,8 @@
 credentials.json
 deply.yaml
+deploy.retry
 testimages/.idea/
 deploy/.DS_Store
 .DS_Store
+fetcher/project/.idea/
 
