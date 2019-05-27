@@ -13,6 +13,7 @@ from keras.preprocessing.image import load_img
 from keras.preprocessing.image import img_to_array
 from keras.applications.imagenet_utils import decode_predictions
 import matplotlib.pyplot as plt
+import time
 
  
 #Load the VGG model
@@ -62,6 +63,7 @@ def predict_image(imagepath,acceptable_names):
 
 filename = '/Users/luisferreira/Downloads/101_ObjectCategories/'
 
+start = int(round(time.time() * 1000))
 imageList = []
 for i in range(1,51):
     imageList.append("%sstegosaurus/image_%.4d.jpg"%(filename,i))
@@ -69,8 +71,11 @@ counter = 0
 for image in imageList:
     if predict_image(image,['triceratops']):
         counter += 1
+finish = int(round(time.time() * 1000))
 print('Stegosaurus accuracy = ', counter/50)
+print(finish-start,' ms')
 
+start = int(round(time.time() * 1000))
 imageList = []
 for i in range(1,51):
     imageList.append("%sscorpion/image_%.4d.jpg"%(filename,i))
@@ -78,8 +83,11 @@ counter = 0
 for image in imageList:
     if predict_image(image,['scorpion']):
         counter += 1
-print('Scorpion accuracy = ', counter/50)      
+finish = int(round(time.time() * 1000))
+print('Scorpion accuracy = ', counter/50)     
+print(finish-start,' ms') 
 
+start = int(round(time.time() * 1000))
 imageList = []
 for i in range(1,51):
     imageList.append("%sLeopards/image_%.4d.jpg"%(filename,i))
@@ -87,9 +95,11 @@ counter = 0
 for image in imageList:
     if predict_image(image,['leopard']):
         counter += 1
+finish = int(round(time.time() * 1000))
 print('Leopard accuracy = ', counter/50)  
+print(finish-start,' ms')
 
-
+start = int(round(time.time() * 1000))
 imageList = []
 for i in range(1,41):
     imageList.append("%smayfly/image_%.4d.jpg"%(filename,i))
@@ -97,10 +107,12 @@ counter = 0
 for image in imageList:
     if predict_image(image,['dragonfly','lacewing']):
         counter += 1
+finish = int(round(time.time() * 1000))
 print('Mayfly accuracy = ', counter/40)
+print(finish-start,' ms')
 
 
-
+start = int(round(time.time() * 1000))
 imageList = []
 for i in range(1,47):
     imageList.append("%sbeaver/image_%.4d.jpg"%(filename,i))
@@ -108,4 +120,6 @@ counter = 0
 for image in imageList:
     if predict_image(image,['beaver','otter']):
         counter += 1
+finish = int(round(time.time() * 1000))
 print('Beaver accuracy = ', counter/46)   
+print(finish-start,' ms')

@@ -34,8 +34,13 @@ public class ImageClassifierStub{
     }
 
     public static void main(String args[]) throws Exception{
-        ImageClassifierStub imageClassifierStub = new ImageClassifierStub();
-        imageClassifierStub.classifyImage("http://pbs.twimg.com/media/C_UdnvPUwAE3Dnn.jpg");
+        long start = System.currentTimeMillis();
+        for(int i = 0; i < 50; i++) {
+            ImageClassifierStub imageClassifierStub = new ImageClassifierStub();
+            imageClassifierStub.classifyImage("http://pbs.twimg.com/media/C_UdnvPUwAE3Dnn.jpg");
+        }
+        long finish = System.currentTimeMillis();
+        System.out.println((finish-start) + "ms");
     }
 
 }

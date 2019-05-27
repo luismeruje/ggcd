@@ -13,7 +13,7 @@
     #create spark master
     - role: gcp-instance
       vars:
-        gcp_machine_type: n1-standard-2
+        gcp_machine_type: n1-highcpu-8
         instances:
           - { index: 1, tag: spark-master }
         disk_size: 50
@@ -24,9 +24,10 @@
     #create spark slaves
     - role: gcp-instance
       vars:
-        gcp_machine_type: n1-standard-1
+        gcp_machine_type: n1-highcpu-8
         instances:
           - { index: 1, tag: spark-slave }
+          - { index: 2, tag: spark-slave }
         disk_size: 50
         disk_type: pd-standard
         type: spark-slave

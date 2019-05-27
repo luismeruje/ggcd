@@ -49,5 +49,5 @@
   shell: /home/spark/spark-2.4.3-bin-hadoop2.7/sbin/stop-master.sh
 
 - name: start spark-master
-  shell: /home/spark/spark-2.4.3-bin-hadoop2.7/sbin/start-master.sh --host 0.0.0.0
+  shell: /home/spark/spark-2.4.3-bin-hadoop2.7/sbin/start-master.sh --host 0.0.0.0 
 
