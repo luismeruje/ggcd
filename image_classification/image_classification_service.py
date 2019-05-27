@@ -49,11 +49,12 @@ vgg_model = vgg16.VGG16(weights='imagenet')
 s = socket.socket()
 port = 6144
 
+
+
+init_url = "https://pbs.twimg.com/media/D7ilK0BXsAAziEg.jpg"
+predict_image(init_url)
 s.bind(('',port))
 print("Socket binded to %s" % (port))
-
-init_url = "https://pbs.twimg.com/media/D7ilK0BXsAAziEg.jpg7"
-predict_image(init_url)
 
 s.listen(200)
 while True:

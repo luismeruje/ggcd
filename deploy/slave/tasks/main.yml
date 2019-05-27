@@ -49,7 +49,7 @@
   shell: /home/spark/spark-2.4.3-bin-hadoop2.7/sbin/stop-slave.sh
 
 - name: start spark-slave
-  shell: /home/spark/spark-2.4.3-bin-hadoop2.7/sbin/start-slave.sh spark://{{ groups['spark-master'][0] }}:7077 -c 6 -m 3G 
+  shell: /home/spark/spark-2.4.3-bin-hadoop2.7/sbin/start-slave.sh spark://{{ groups['spark-master'][0] }}:7077 -c 4 -m 3G 
   args:
      executable: /bin/bash
 
