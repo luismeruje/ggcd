@@ -56,7 +56,7 @@ predict_image(init_url)
 s.bind(('',port))
 print("Socket binded to %s" % (port))
 
-s.listen(200)
+s.listen(10000)
 while True:
     connection, addr = s.accept()
     message = connection.recv(4096)
